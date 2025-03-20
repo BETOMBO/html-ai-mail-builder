@@ -5,7 +5,7 @@ import prisma from '@/lib/prisma';
 import { trackUserAction, updateDailyAnalytics } from '@/lib/analytics';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2025-02-24.acacia',
 });
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -30,35 +30,38 @@ export async function POST(request: Request) {
         const userId = session.metadata?.userId;
         const plan = session.metadata?.plan;
 
-        if (userId && plan) {
-          const user = await prisma.user.findUnique({
-            where: { id: userId },
-            select: { subscription: true },
-          });
-
-          await prisma.user.update({
-            where: { id: userId },
-            data: {
-              subscription: plan,
-              stripeSubscriptionId: session.subscription as string,
-              stripePriceId: session.metadata.priceId,
-              stripeCurrentPeriodEnd: new Date(
-                (session.subscription_data?.trial_end || session.expires_at) * 1000
-              ),
-            },
-          });
-
-          // Track subscription change
-          await trackUserAction(
-            userId,
-            'subscription_change',
-            user?.subscription,
-            plan
-          );
-
-          // Update daily analytics
-          await updateDailyAnalytics();
+        if (!userId || !plan) {
+          return new NextResponse('Missing metadata', { status: 400 });
         }
+
+        const user = await prisma.user.findUnique({
+          where: { id: userId },
+          select: { subscription: true },
+        });
+
+        await prisma.user.update({
+          where: { id: userId },
+          data: {
+            subscription: plan,
+            stripeSubscriptionId: session.subscription as string,
+            stripePriceId: session.metadata?.priceId,
+            stripeCurrentPeriodEnd: session.expires_at 
+              ? new Date(session.expires_at * 1000)
+              : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            nextRenewal: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+          },
+        });
+
+        // Track subscription change
+        await trackUserAction(
+          userId,
+          'subscription_change',
+          user?.subscription,
+          plan
+        );
+
+        // Update daily analytics
+        await updateDailyAnalytics();
         break;
       }
 

@@ -39,21 +39,24 @@ model Session {
 }
 
 model User {
-  id            String     @id @default(cuid())
-  name          String?
-  email         String?    @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  templates     Template[]
-  subscription  String     @default("Free Plan")
-  generations   Int        @default(5)
-  nextRenewal   DateTime?  @default(now())
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  analytics     UserAnalytics[]
+  id                    String     @id @default(cuid())
+  name                  String?
+  email                 String?    @unique
+  emailVerified         DateTime?
+  password              String?
+  image                 String?
+  accounts              Account[]
+  sessions              Session[]
+  templates             Template[]
+  subscription          String     @default("Free Plan")
+  generations           Int        @default(5)
+  nextRenewal           DateTime?  @default(now())
+  stripeSubscriptionId  String?
+  stripePriceId         String?
+  stripeCurrentPeriodEnd DateTime?
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+  analytics             UserAnalytics[]
 }
 
 model VerificationToken {

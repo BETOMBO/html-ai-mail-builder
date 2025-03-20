@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import {
   ArrowLeftIcon,
   ArrowPathIcon,
@@ -150,7 +150,7 @@ const layouts: Layout[] = [
   },
 ];
 
-export default function EditorPage() {
+function EditorContent() {
   const [projectName, setProjectName] = useState('Untitled Project');
   const [activeTab, setActiveTab] = useState('layouts');
   const [showCode, setShowCode] = useState(false);
@@ -235,10 +235,10 @@ export default function EditorPage() {
             }
           ]
         },
-        codeViewer: {
+       /* codeViewer: {
           theme: 'dark',
           lineNumbers: true,
-        }
+        }*/
       });
 
       editor.on('block:drag:stop', (component: any) => {
@@ -745,5 +745,17 @@ export default function EditorPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function EditorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-600"></div>
+      </div>
+    }>
+      <EditorContent />
+    </Suspense>
   );
 } 

@@ -2,7 +2,9 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
 
-const plans = {
+type PlanType = 'Free Plan' | 'Starter Plan' | 'Pro Plan' | 'Premium Plan';
+
+const plans: Record<PlanType, { tokens: number }> = {
   'Free Plan': { tokens: 5 },
   'Starter Plan': { tokens: 250 },
   'Pro Plan': { tokens: 1000 },
@@ -21,7 +23,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { plan } = body;
+    const { plan } = body as { plan: PlanType };
 
     if (!plan || !plans[plan]) {
       return NextResponse.json(
@@ -38,12 +40,12 @@ export async function POST(request: Request) {
       where: { email: session.user.email },
       data: {
         subscription: plan,
-        tokens: plans[plan].tokens,
+        generations: plans[plan].tokens,
         nextRenewal,
       },
       select: {
         subscription: true,
-        tokens: true,
+        generations: true,
         nextRenewal: true,
       },
     });
