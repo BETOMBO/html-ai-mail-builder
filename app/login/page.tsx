@@ -80,6 +80,9 @@ function LoginContent() {
   };
 
   if (status === 'loading') {
+    console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'Present' : 'Missing');
+    console.log('DIRECT_URL:', process.env.DIRECT_URL ? 'Present' : 'Missing');
+
     console.log('Session loading...');
     return (
       <div className="min-h-screen flex items-center justify-center">
