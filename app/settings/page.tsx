@@ -77,6 +77,13 @@ export default function SettingsPage() {
   const [nextRenewal, setNextRenewal] = useState<Date | null>(null);
 
   useEffect(() => {
+    // Debug environment variables
+    console.log('Environment Check:', {
+      hasDatabaseUrl: !!process.env.NEXT_PUBLIC_DATABASE_URL,
+      hasDirectUrl: !!process.env.NEXT_PUBLIC_DIRECT_URL,
+      nodeEnv: process.env.NODE_ENV
+    });
+
     // Fetch user's subscription data
     const fetchUserData = async () => {
       if (session?.user?.id) {
