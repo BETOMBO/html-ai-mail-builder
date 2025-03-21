@@ -77,11 +77,11 @@ export default function SettingsPage() {
   const [nextRenewal, setNextRenewal] = useState<Date | null>(null);
 
   useEffect(() => {
-    // Debug environment variables
+    // Debug environment variables - only using NEXT_PUBLIC_ prefixed variables
     console.log('Environment Check:', {
-      hasDatabaseUrl: !!process.env.NEXT_PUBLIC_DATABASE_URL,
-      hasDirectUrl: !!process.env.NEXT_PUBLIC_DIRECT_URL,
-      nodeEnv: process.env.NODE_ENV
+      nodeEnv: process.env.NEXT_PUBLIC_NODE_ENV,
+      hasStripeKey: !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+      hasGaId: !!process.env.NEXT_PUBLIC_GA_ID
     });
 
     // Fetch user's subscription data

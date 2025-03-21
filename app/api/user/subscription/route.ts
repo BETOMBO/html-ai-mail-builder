@@ -8,8 +8,12 @@ export const revalidate = 0;
 export async function GET() {
   try {
     console.log('Subscription API: Starting request');
-    console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'Present' : 'Missing');
-    console.log('DIRECT_URL:', process.env.DIRECT_URL ? 'Present' : 'Missing');
+    // Server-side environment variables don't need NEXT_PUBLIC_ prefix
+    console.log('Environment Check:', {
+      hasDatabaseUrl: !!process.env.DATABASE_URL,
+      hasDirectUrl: !!process.env.DIRECT_URL,
+      nodeEnv: process.env.NODE_ENV
+    });
     
     const session = await getServerSession();
     console.log('Subscription API: Session:', session?.user?.email);
