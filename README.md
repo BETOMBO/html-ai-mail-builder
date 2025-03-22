@@ -1,6 +1,6 @@
-# EmailCanvasAI - AI-Powered Email Template Builder
+# EmailHTMLGen - AI-Powered Email Template Builder
 
-EmailCanvasAI is a modern, AI-powered email template builder that helps you create beautiful and responsive email templates with ease. Built with Next.js, TypeScript, and Tailwind CSS, it offers a drag-and-drop interface and AI-powered content generation.
+EmailHTMLGen is a modern, AI-powered email template builder that helps you create beautiful and responsive email templates with ease. Built with Next.js, TypeScript, and Tailwind CSS, it offers a drag-and-drop interface and AI-powered content generation.
 
 ## Features
 

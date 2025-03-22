@@ -29,7 +29,7 @@ export default function Sidebar() {
     <div className="flex h-full w-64 flex-col bg-gray-900">
       <div className="flex h-16 items-center px-4">
         <Link href="/" className="flex items-center space-x-2">
-          <div className="text-2xl font-bold text-white">EmailCanvasAI</div>
+          <div className="text-2xl font-bold text-white">EmailHTMLGen</div>
         </Link>
       </div>
       <nav className="flex-1 space-y-1 px-2 py-4">

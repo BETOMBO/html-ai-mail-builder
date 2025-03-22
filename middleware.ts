@@ -7,22 +7,28 @@ const publicPaths = ['/login', '/signup'];
 
 export async function middleware(request: NextRequestWithAuth) {
   const path = request.nextUrl.pathname;
-  //console.log('🔒 Middleware executing for path:', path);
+  console.log(`[Middleware] Processing request for path: ${path}`);
   
   // Check if the path is public
   const isPublicPath = publicPaths.some(publicPath => path.startsWith(publicPath));
- // console.log('📍 Is public path:', isPublicPath);
+  console.log(`[Middleware] Path ${path} is ${isPublicPath ? 'public' : 'protected'}`);
 
   // Get the token
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   });
- // console.log('🔑 Token exists:', !!token);
-
+  
+  if (token) {
+    console.log(`[Middleware] User authenticated: ${token.email}`);
+  } else {
+    console.log('[Middleware] No authentication token found');
+  }
+  
   // Redirect logic
-  if (!token && !isPublicPath ) {
-  //  console.log('⚠️ No token found for protected route, redirecting to login');
+  if (!token && !isPublicPath) {
+    console.log(`[Middleware] Unauthenticated user attempting to access protected route: ${path}`);
+    console.log(`[Middleware] Redirecting to login with callback URL: ${request.url}`);
     // If no token and trying to access protected route, redirect to login
     const url = new URL('/login', request.url);
     url.searchParams.set('callbackUrl', encodeURI(request.url));
@@ -30,12 +36,13 @@ export async function middleware(request: NextRequestWithAuth) {
   }
 
   if (token && isPublicPath) {
-   // console.log('✅ User already authenticated, redirecting to editor');
+    console.log(`[Middleware] Authenticated user attempting to access public route: ${path}`);
+    console.log(`[Middleware] Redirecting to editor`);
     // If has token and trying to access login/signup, redirect to editor
     return NextResponse.redirect(new URL('/editor', request.url));
   }
 
- // console.log('✨ Proceeding with request');
+  console.log(`[Middleware] Request proceeding for path: ${path}`);
   return NextResponse.next();
 }
 
