@@ -10,7 +10,7 @@ export async function middleware(request: NextRequestWithAuth) {
   console.log(`[Middleware] Processing request for path: ${path}`);
   
   // Check if the path is public
-  const isPublicPath = publicPaths.some(publicPath => path.startsWith(publicPath));
+  const isPublicPath = publicPaths.some(publicPath => path.startsWith(publicPath)) || path === '/';
   console.log(`[Middleware] Path ${path} is ${isPublicPath ? 'public' : 'protected'}`);
 
   // Get the token
@@ -21,6 +21,11 @@ export async function middleware(request: NextRequestWithAuth) {
   
   if (token) {
     console.log(`[Middleware] User authenticated: ${token.email}`);
+    // Redirect authenticated users from root to /home
+    if (path === '/') {
+      console.log(`[Middleware] Redirecting authenticated user from root to /home`);
+      return NextResponse.redirect(new URL('/home', request.url));
+    }
   } else {
     console.log('[Middleware] No authentication token found');
   }
@@ -35,7 +40,7 @@ export async function middleware(request: NextRequestWithAuth) {
     return NextResponse.redirect(url);
   }
 
-  if (token && isPublicPath) {
+  if (token && isPublicPath && path !== '/') {
     console.log(`[Middleware] Authenticated user attempting to access public route: ${path}`);
     console.log(`[Middleware] Redirecting to editor`);
     // If has token and trying to access login/signup, redirect to editor
@@ -57,5 +62,12 @@ export const config = {
      * - public folder
      */
     '/((?!_next/static|_next/image|favicon.ico|public|api/auth).*)',
+    '/home',
+    '/dashboard/:path*',
+    '/editor/:path*',
+    '/templates/:path*',
+    '/settings/:path*',
+    '/login',
+    '/signup',
   ],
 }; 
