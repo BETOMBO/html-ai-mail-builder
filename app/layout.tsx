@@ -3,13 +3,13 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
-import { GA_TRACKING_ID } from '@/lib/gtag';
+import GoogleAnalytics from './components/GoogleAnalytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Email Canvas',
-  description: 'Create beautiful email templates with AI',
+  title: 'HTML Generator AI',
+  description: 'Generate beautiful HTML emails with AI',
 };
 
 export default function RootLayout({
@@ -39,6 +39,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} h-full`}>
         <Providers>
+          <GoogleAnalytics />
           {children}
         </Providers>
       </body>
