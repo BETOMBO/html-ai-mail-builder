@@ -14,6 +14,7 @@
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@prisma/client": "^6.5.0",
+    "@radix-ui/react-slot": "^1.1.2",
     "@tiptap/extension-image": "^2.11.5",
     "@tiptap/extension-link": "^2.11.5",
     "@tiptap/extension-placeholder": "^2.11.5",
@@ -21,6 +22,8 @@
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "bcryptjs": "^3.0.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "date-fns": "^3.3.1",
     "dotenv": "^16.4.7",
     "framer-motion": "^11.0.5",
@@ -29,6 +32,7 @@
     "grapesjs-plugin-export": "^1.0.12",
     "grapesjs-plugin-forms": "^2.0.6",
     "grapesjs-preset-webpage": "^1.0.3",
+    "lucide-react": "^0.483.0",
     "next": "14.1.0",
     "next-auth": "^4.24.11",
     "openai": "^4.86.1",
@@ -37,7 +41,8 @@
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
-    "stripe": "^17.7.0"
+    "stripe": "^17.7.0",
+    "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
