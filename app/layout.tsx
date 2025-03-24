@@ -9,18 +9,29 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'AI Email Generator | Create Beautiful HTML Emails with AI',
-  description: 'Generate responsive HTML emails with AI. The best AI email builder for creating marketing emails, newsletters, and email templates. Automated email design generator with AI-powered features.',
-  keywords: 'AI email generator, generate HTML email with AI, AI newsletter creator, responsive email builder online, AI email template generator, create marketing email with AI, AI email design tool, automated email design generator, best AI email builder, HTML email AI tool',
+  description: 'Generate professional HTML emails instantly with AI. Create responsive email templates, newsletters, and marketing emails. The best AI-powered email builder for creating stunning email designs.',
+  keywords: [
+    'AI email generator',
+    'HTML email with AI',
+    'AI newsletter creator',
+    'responsive email builder',
+    'AI email template generator',
+    'marketing email with AI',
+    'AI email design tool',
+    'automated email design',
+    'best AI email builder',
+    'HTML email AI tool'
+  ],
   openGraph: {
     title: 'AI Email Generator | Create Beautiful HTML Emails with AI',
-    description: 'Generate responsive HTML emails with AI. The best AI email builder for creating marketing emails, newsletters, and email templates.',
+    description: 'Generate professional HTML emails instantly with AI. Create responsive email templates, newsletters, and marketing emails. The best AI-powered email builder for creating stunning email designs.',
     type: 'website',
     locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AI Email Generator | Create Beautiful HTML Emails with AI',
-    description: 'Generate responsive HTML emails with AI. The best AI email builder for creating marketing emails, newsletters, and email templates.',
+    description: 'Generate professional HTML emails instantly with AI. Create responsive email templates, newsletters, and marketing emails. The best AI-powered email builder for creating stunning email designs.',
   },
 };
 
