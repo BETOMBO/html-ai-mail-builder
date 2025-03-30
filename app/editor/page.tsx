@@ -164,6 +164,8 @@ function EditorContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const templateId = searchParams.get('id');
+  const [showStyleManager, setShowStyleManager] = useState(false);
+  const [selectedComponent, setSelectedComponent] = useState<any>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -189,6 +191,32 @@ function EditorContent() {
           'gjs-blocks-basic': {},
           'gjs-plugin-forms': {},
           'gjs-plugin-export': {},
+        },
+        styleManager: {
+          appendTo: '#style-manager-container',
+
+          sectors: [
+            {
+              name: 'Dimension',
+              open: false,
+              buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding'],
+            },
+            {
+              name: 'Typography',
+              open: false,
+              buildProps: ['font-family', 'font-size', 'font-weight', 'color', 'line-height', 'letter-spacing', 'text-align', 'text-decoration'],
+            },
+            {
+              name: 'Decorations',
+              open: false,
+              buildProps: ['border-radius', 'border', 'box-shadow', 'background'],
+            },
+            {
+              name: 'Extra',
+              open: false,
+              buildProps: ['opacity', 'overflow', 'position', 'display'],
+            }
+          ]
         },
         deviceManager: {
           devices: [
@@ -265,6 +293,18 @@ function EditorContent() {
           
           return modal;
         }
+      });
+
+      // Add component selection handler
+      editor.on('component:selected', (component: any) => {
+        setSelectedComponent(component);
+        setShowStyleManager(true);
+      });
+
+      // Add component deselection handler
+      editor.on('component:deselected', () => {
+        setSelectedComponent(null);
+        setShowStyleManager(false);
       });
 
       setEditor(editor);
@@ -667,11 +707,12 @@ function EditorContent() {
             <div id="gjs" className="h-full" />
           </div>
 
-          <div className="w-64 border-l border-gray-200 bg-white">
+          {/* Components Panel */}
+          <div className={`border-l border-gray-200 bg-white transition-all duration-300 ${showStyleManager ? 'w-64' : 'w-64'}`}>
             <div className="h-full flex flex-col">
               <div className="border-b border-gray-200">
                 <nav className="flex -mb-px">
-                  {['layouts', 'components', 'my-components'].map((tab) => (
+                  {['layouts', 'components'].map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
@@ -733,12 +774,25 @@ function EditorContent() {
                     ))}
                   </div>
                 )}
+              </div>
+            </div>
+          </div>
 
-                {activeTab === 'my-components' && (
-                  <div className="flex items-center justify-center h-full text-gray-400">
-                    Custom components coming soon
-                  </div>
-                )}
+          {/* Style Manager Panel */}
+          <div className={`border-l border-gray-200 bg-white transition-all duration-300 ${showStyleManager ? 'w-80' : 'w-0'}`}>
+            <div className="h-full flex flex-col">
+              <div className="border-b border-gray-200 p-4 flex justify-between items-center">
+                <h3 className="text-sm font-medium text-gray-900">Style Manager</h3>
+                <button
+                  onClick={() => setShowStyleManager(false)}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <span className="sr-only">Close</span>
+                  ×
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto">
+                <div id="style-manager-container" className="h-full" />
               </div>
             </div>
           </div>

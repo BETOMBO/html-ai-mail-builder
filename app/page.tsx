@@ -3,9 +3,22 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { PaperAirplaneIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/navigation';
 
 export default function LandingPage() {
   const [prompt, setPrompt] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (prompt.trim()) {
+      router.push('/editor');
+    }
+  };
+
+  const handleInputClick = () => {
+    router.push('/editor');
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -80,6 +93,12 @@ export default function LandingPage() {
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Generate Email Html to market my product"
               className="flex-1 border-0 focus:ring-0 text-gray-900 placeholder-gray-500"
+              onClick={handleInputClick}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  handleSubmit(e);
+                }
+              }}
             />
             <button className="p-2 text-gray-400 hover:text-gray-500">
               <PhotoIcon className="h-5 w-5" />

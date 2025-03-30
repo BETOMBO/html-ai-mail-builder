@@ -1,67 +1,35 @@
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import { NextRequestWithAuth } from 'next-auth/middleware';
 
-// List of paths that don't require authentication
-const publicPaths = ['/login', '/signup'];
-
-export async function middleware(request: NextRequestWithAuth) {
+export async function middleware(request: NextRequest) {
+  const token = await getToken({ req: request });
   const path = request.nextUrl.pathname;
-  console.log(`[Middleware] Processing request for path: ${path}`);
-  
-  // Check if the path is public
-  const isPublicPath = publicPaths.some(publicPath => path.startsWith(publicPath)) || path === '/';
-  console.log(`[Middleware] Path ${path} is ${isPublicPath ? 'public' : 'protected'}`);
 
-  // Get the token
-  const token = await getToken({
-    req: request,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
-  
-  if (token) {
-    console.log(`[Middleware] User authenticated: ${token.email}`);
-    // Redirect authenticated users from root to /home
-    if (path === '/') {
-      console.log(`[Middleware] Redirecting authenticated user from root to /home`);
-      return NextResponse.redirect(new URL('/home', request.url));
-    }
-  } else {
-    console.log('[Middleware] No authentication token found');
+  // Public paths that don't require authentication
+  const publicPaths = ['/', '/pricing', '/blog', '/login', '/signup'];
+  if (publicPaths.includes(path)) {
+    return NextResponse.next();
   }
-  
-  // Redirect logic
-  if (!token && !isPublicPath) {
-    console.log(`[Middleware] Unauthenticated user attempting to access protected route: ${path}`);
-    console.log(`[Middleware] Redirecting to login with callback URL: ${request.url}`);
-    // If no token and trying to access protected route, redirect to login
+
+  // Protected paths that require authentication
+  if (!token) {
     const url = new URL('/login', request.url);
-    url.searchParams.set('callbackUrl', encodeURI(request.url));
+    url.searchParams.set('callbackUrl', path);
     return NextResponse.redirect(url);
   }
 
-  if (token && isPublicPath && path !== '/') {
-    console.log(`[Middleware] Authenticated user attempting to access public route: ${path}`);
-    console.log(`[Middleware] Redirecting to editor`);
-    // If has token and trying to access login/signup, redirect to editor
-    return NextResponse.redirect(new URL('/editor', request.url));
+  // If user is authenticated and tries to access login/signup, redirect to home
+  if (token && (path === '/login' || path === '/signup')) {
+    return NextResponse.redirect(new URL('/home', request.url));
   }
 
-  console.log(`[Middleware] Request proceeding for path: ${path}`);
   return NextResponse.next();
 }
 
-// Configure which routes to protect
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    '/((?!_next/static|_next/image|favicon.ico|public|api/auth).*)',
+    '/',
     '/home',
     '/dashboard/:path*',
     '/editor/:path*',
@@ -69,5 +37,7 @@ export const config = {
     '/settings/:path*',
     '/login',
     '/signup',
-  ],
+    '/pricing',
+    '/blog'
+  ]
 }; 
