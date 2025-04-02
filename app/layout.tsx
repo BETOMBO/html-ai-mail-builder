@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AI Email Generator | Create Beautiful HTML Emails with AI',
     description: 'Generate professional HTML emails instantly with AI. Create responsive email templates, newsletters, and marketing emails. The best AI-powered email builder for creating stunning email designs.',
-    images: ['https://html-generator-ai.vercel.app/og-image.png'],
+    images: ['/og-image.png'],
   },
 };
 
