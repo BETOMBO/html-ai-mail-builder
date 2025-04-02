@@ -27,11 +27,22 @@ export const metadata: Metadata = {
     description: 'Generate professional HTML emails instantly with AI. Create responsive email templates, newsletters, and marketing emails. The best AI-powered email builder for creating stunning email designs.',
     type: 'website',
     locale: 'en_US',
+    url: 'www.htmlemailgen.com',
+    siteName: 'AI Email Generator',
+    images: [
+      {
+        url: 'www.htmlemailgen.com/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'AI Email Generator - Create Beautiful HTML Emails with AI',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'AI Email Generator | Create Beautiful HTML Emails with AI',
     description: 'Generate professional HTML emails instantly with AI. Create responsive email templates, newsletters, and marketing emails. The best AI-powered email builder for creating stunning email designs.',
+    images: ['https://html-generator-ai.vercel.app/og-image.png'],
   },
 };
 
